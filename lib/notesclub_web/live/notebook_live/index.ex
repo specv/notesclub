@@ -12,11 +12,24 @@ defmodule NotesclubWeb.NotebookLive.Index do
 
   def per_page, do: @per_page
 
+  def render(assigns) do
+    IO.puts("======= render")
+    dbg()
+
+    ~H"""
+    Hello, World!
+    """
+  end
+
   def mount(_params, _session, socket) do
+    IO.puts("======= mount")
+    dbg()
     {:ok, assign(socket, notebooks_count: Notebooks.count(), last_search_time: 0)}
   end
 
   def handle_params(params, _url, %{assigns: %{live_action: live_action}} = socket) do
+    IO.puts("======= handle_params")
+    dbg()
     run_action(params, live_action, socket)
   end
 
@@ -58,11 +71,17 @@ defmodule NotesclubWeb.NotebookLive.Index do
     {:noreply, assign(socket, page: 0, notebooks: notebooks, search: nil, author: nil, repo: nil)}
   end
 
-  def handle_event("search", %{"value" => ""}, socket) do
+  def handle_event(event, params, socket) do
+    IO.puts("======= handle_event")
+    dbg()
+    run_event(event, params, socket)
+  end
+
+  def run_event("search", %{"value" => ""}, socket) do
     {:noreply, push_patch(socket, to: Routes.notebook_index_path(socket, :home))}
   end
 
-  def handle_event("search", params, socket) do
+  def run_event("search", params, socket) do
     timestamp = params["timestamp"]
 
     cond do
@@ -86,15 +105,15 @@ defmodule NotesclubWeb.NotebookLive.Index do
     end
   end
 
-  def handle_event("random", _, socket) do
+  def run_event("random", _, socket) do
     {:noreply, push_patch(socket, to: Routes.notebook_index_path(socket, :random))}
   end
 
-  def handle_event("home", _, socket) do
+  def run_event("home", _, socket) do
     {:noreply, push_patch(socket, to: Routes.notebook_index_path(socket, :home))}
   end
 
-  def handle_event("load-more", _, socket) do
+  def run_event("load-more", _, socket) do
     %{assigns: %{page: page, notebooks: notebooks, live_action: live_action}} = socket
 
     next_page = page + 1
