@@ -49,7 +49,7 @@ defmodule LifeCycleHook do
       [get_common_message(socket, :mount), get_connection_message(socket)]
       |> Enum.join(" ")
 
-    Logger.log(log_level, message)
+    Logger.log(log_level, message, ansi_color: :red)
   end
 
   defp attach_life_cycle_hook(socket, :handle_params, log_level) do
@@ -59,7 +59,7 @@ defmodule LifeCycleHook do
         [get_common_message(socket, :handle_params), get_connection_message(socket)]
         |> Enum.join(" ")
 
-      Logger.log(log_level, message)
+      Logger.log(log_level, message, ansi_color: :red)
 
       {:cont, socket}
     end)
@@ -72,7 +72,7 @@ defmodule LifeCycleHook do
         [get_common_message(socket, :handle_event), "event: #{event}"]
         |> Enum.join(" ")
 
-      Logger.log(log_level, message)
+      Logger.log(log_level, message, ansi_color: :red)
 
       {:cont, socket}
     end)
@@ -85,7 +85,7 @@ defmodule LifeCycleHook do
         [get_common_message(socket, :handle_info), "message: #{message}"]
         |> Enum.join(" ")
 
-      Logger.log(log_level, message)
+      Logger.log(log_level, message, ansi_color: :red)
 
       {:cont, socket}
     end)
