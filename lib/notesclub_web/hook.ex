@@ -98,7 +98,7 @@ defmodule LifeCycleHook do
   end
 
   defp get_connection_message(socket) do
-    "connected: #{connected?(socket)}"
+    "connected: #{connected?(socket)} process: #{inspect(self())}"
   end
 
   defp get_common_message(socket, stage) do
